@@ -1,11 +1,25 @@
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Paper, Typography, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
- function AddressDisplay({ data }) {
+function AddressDisplay({ data, onClose }) {
   if (!data) return null;
 
   return (
-    <Paper elevation={3} sx={{ p: 2, mt: 4 }}>
+    <Paper elevation={3} sx={{ p: 2, mt: 4, position: 'relative' }}>
+      <IconButton
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          color: 'grey.600',
+        }}
+        aria-label="Fechar"
+      >
+        <CloseIcon />
+      </IconButton>
+
       <Typography variant="h6" gutterBottom>
         Resultado do CEP
       </Typography>
@@ -17,4 +31,5 @@ import { Paper, Typography } from '@mui/material';
     </Paper>
   );
 }
+
 export default AddressDisplay;

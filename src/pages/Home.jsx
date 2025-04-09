@@ -15,7 +15,12 @@ import ErrorMessage from '../components/ErrorMessage';
       </Typography>
       <SearchInput onSuccess={setCepData} onError={setError} />
       <ErrorMessage message={error} />
-      <AddressDisplay data={cepData} />
+      {cepData && (
+      <AddressDisplay
+          data={cepData}
+          onClose={() => setCepData(null)} // <-- aqui é o botão "X" funcionando
+        />
+      )}
     </Container>
   );
 }
