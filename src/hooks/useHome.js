@@ -15,15 +15,19 @@ export default function useHome() {
     const handleSearchClick = () => {
         searchCep(showCepData); 
     };
+    
+    const clearDataAndError = () => {
+        clearCepData();
+        setError('');
+    };
 
     return {
         cepData,
-        clearCepData,
+        clearCepData: clearDataAndError,
         formattedCep,
         isLoading,
         error,
         handleFormattedCepChange,
         handleSearchClick, 
-        setError,
     };
 }

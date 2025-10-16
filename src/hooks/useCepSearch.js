@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import IMask from 'imask';
-import { getCepData } from "../services";
+import { getCepData } from "../services/cepApi"; 
 
 export default function useCepSearch() {
   const [formattedCep, setFormattedCep] = useState('');
@@ -8,6 +8,8 @@ export default function useCepSearch() {
   const [error, setError] = useState('');
 
   const handleFormattedCepChange = (value) => {
+    setError(''); 
+
     const cepMask = IMask.createMask({ mask: '00000-000' });
     cepMask.resolve(value);
     setFormattedCep(cepMask.value);
@@ -15,9 +17,11 @@ export default function useCepSearch() {
 
   const searchCep = async (onSuccess) => {
     const unmaskedCep = formattedCep.replace(/\D/g, '');
+
     if (unmaskedCep.length !== 8) {
-       setError('Digite um CEP válido com 8 dígitos.');
-       return;
+      setError('Digite um CEP válido com 8 dígitos.');
+      onSuccess(null);
+      return;
     }
 
     setIsLoading(true);
@@ -30,12 +34,12 @@ export default function useCepSearch() {
         onSuccess(null);
         setError('CEP não encontrado.');
       } else {
-        onSuccess(addressData); 
+        onSuccess(addressData);
       }
     } catch (fetchError) {
       console.error('Erro ao buscar dados do CEP:', fetchError);
       onSuccess(null);
-      setError(fetchError.message || 'Erro ao buscar o CEP.'); 
+      setError(fetchError.message || 'Erro desconhecido ao buscar o CEP.'); 
     } finally {
       setIsLoading(false);
     }

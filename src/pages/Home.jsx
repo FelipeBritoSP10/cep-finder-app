@@ -2,14 +2,14 @@ import React from 'react';
 import { Container, Typography, Paper, Box } from '@mui/material';
 import SearchInput from '../components/SearchInput';
 import AddressDisplay from '../components/AddressDisplay';
-import ErrorMessage from '../components/ErrorMessage';
+import ErrorMessage from '../components/ErrorMessage'; 
 import useHome from '../hooks/useHome';
 
 function Home() {
     const { 
         cepData, 
         clearCepData, 
-        error,
+        error, 
         handleSearchClick 
     } = useHome();
 
@@ -29,6 +29,7 @@ function Home() {
                     <ErrorMessage message={error} /> 
                 </Box>
             </Paper>
+
             <AddressDisplay cepData={cepData} onClose={clearCepData} />
         </Container>
     );
