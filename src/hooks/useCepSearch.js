@@ -14,11 +14,11 @@ export default function useCepSearch() {
     const cepMask = IMask.createMask({ mask: '00000-000' });
     cepMask.value = cleanValue;
 
-      setFormattedCep(cepMask.value);
+    setFormattedCep(cepMask.value);
   };
 
   const searchCep = async (onSuccess) => {
-    const unmaskedCep = formattedCep.replace(/\D/g, '');
+    const unmaskedCep = formattedCep.trim().replace(/\D/g, '');
 
     if (unmaskedCep.length !== 8) {
       setError('Digite um CEP válido com 8 dígitos.');
