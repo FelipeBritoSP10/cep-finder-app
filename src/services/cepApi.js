@@ -6,8 +6,8 @@ export async function getCepData(cep) {
       throw new Error("CEP inválido. Deve conter 8 números.");
     }
 
-    const response = await fetch(`https://viacep.com.br/ws/${sanitizedCep}/json/`);
-
+    const response = await fetch(`https://brasilapi.com.br/api/cep/v2/${sanitizedCep}`);
+    
     if (!response.ok) {
       throw new Error(`Erro de rede ao buscar CEP. Status: ${response.status}`);
     }

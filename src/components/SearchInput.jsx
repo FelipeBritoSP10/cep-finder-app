@@ -1,7 +1,8 @@
 import React from 'react';
+import { TextField, Button, CircularProgress, Box } from '@mui/material';
 import useCepSearch from '../hooks/useCepSearch';
 
-export default function CepForm() {
+export default function SearchInput() {
   const {
     formattedCep,
     isLoading,
@@ -19,18 +20,29 @@ export default function CepForm() {
   };
 
   return (
-    <div>
-      <label>Digite o CEP:</label>
-      <input
-        type="text"
+    <Box sx={{ maxWidth: 400, mx: 'auto', p: 2 }}>
+      <TextField
+        label="Digite o CEP"
+        variant="outlined"
+        fullWidth
         value={formattedCep}
         onChange={(e) => handleFormattedCepChange(e.target.value)}
         placeholder="00000-000"
+        error={!!error}
+        helperText={error || ' '}
+        inputProps={{ maxLength: 9 }}
+        sx={{ mb: 2 }}
       />
-      <button onClick={handleSearch} disabled={isLoading}>
-        {isLoading ? 'Buscando...' : 'Buscar'}
-      </button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSearch}
+        disabled={isLoading}
+        fullWidth
+      >
+        {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Buscar'}
+      </Button>
+    </Box>
   );
 }
