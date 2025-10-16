@@ -13,7 +13,7 @@ export default function CepForm() {
   const handleSearch = () => {
     searchCep((data) => {
       if (data) {
-        console.log('Endereço encontrado:', data);
+        console.log('Endereço:', data);
       }
     });
   };
