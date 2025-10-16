@@ -3,23 +3,20 @@ export async function getCepData(cep) {
     const sanitizedCep = cep.replace(/\D/g, ""); 
 
     if (sanitizedCep.length !== 8) {
-      return { error: "CEP inválido. Deve conter 8 números." };
+      throw new Error("CEP inválido. Deve conter 8 números.");
     }
 
     const response = await fetch(`https://viacep.com.br/ws/${sanitizedCep}/json/`);
 
     if (!response.ok) {
-      throw new Error("Erro ao buscar CEP");
+      throw new Error(`Erro de rede ao buscar CEP. Status: ${response.status}`);
     }
 
     const data = await response.json();
 
-    if (data.erro) {
-      return { error: "CEP não encontrado." };
-    }
-
-    return data;
+    return data; 
+    
   } catch (error) {
-    return { error: error.message || "Erro desconhecido" };
+    throw error;
   }
 }

@@ -1,15 +1,16 @@
 import React from 'react';
 import { TextField, Button, Box } from '@mui/material';
-import useCepSearch from '../hooks/useCepSearch';
+import useCepSearch from '../hooks/useCepSearch'; 
 
-function SearchInput({ onSuccess }) {
+function SearchInput({ onSearchClick }) {
   const {
     formattedCep,
     isLoading,
     error,
     handleFormattedCepChange,
-    searchCep,
   } = useCepSearch();
+
+  const isSearchDisabled = isLoading || formattedCep.length !== 9;
 
   return (
     <Box display="flex" gap={2} mt={4} flexDirection={{ xs: 'column', sm: 'row' }}>
@@ -25,8 +26,9 @@ function SearchInput({ onSuccess }) {
       />
       <Button
         variant="contained"
-        onClick={() => searchCep(onSuccess)}
-        disabled={isLoading}>
+        onClick={onSearchClick} 
+        disabled={isSearchDisabled}
+        sx={{ minWidth: 120 }}>
         {isLoading ? 'Buscando...' : 'Buscar'}
       </Button>
     </Box>

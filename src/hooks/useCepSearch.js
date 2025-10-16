@@ -16,8 +16,8 @@ export default function useCepSearch() {
   const searchCep = async (onSuccess) => {
     const unmaskedCep = formattedCep.replace(/\D/g, '');
     if (unmaskedCep.length !== 8) {
-      setError('Digite um CEP válido com 8 dígitos.');
-      return;
+       setError('Digite um CEP válido com 8 dígitos.');
+       return;
     }
 
     setIsLoading(true);
@@ -30,12 +30,12 @@ export default function useCepSearch() {
         onSuccess(null);
         setError('CEP não encontrado.');
       } else {
-        onSuccess(addressData);
+        onSuccess(addressData); 
       }
     } catch (fetchError) {
       console.error('Erro ao buscar dados do CEP:', fetchError);
       onSuccess(null);
-      setError('Erro ao buscar o CEP.');
+      setError(fetchError.message || 'Erro ao buscar o CEP.'); 
     } finally {
       setIsLoading(false);
     }
