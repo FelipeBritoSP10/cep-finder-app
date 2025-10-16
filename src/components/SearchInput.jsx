@@ -20,7 +20,6 @@ function SearchInput({ onSearchClick }) {
                 variant="outlined"
                 value={formattedCep}
                 onChange={(e) => handleFormattedCepChange(e.target.value)}
-                inputProps={{ maxLength: 9 }}
                 error={!!error}
                 helperText={error}
             />
