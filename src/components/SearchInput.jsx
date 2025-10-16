@@ -1,5 +1,5 @@
 import React from 'react';
-import useCepSearch from './hooks/useCepSearch';
+import useCepSearch from '../hooks/useCepSearch';
 
 export default function CepForm() {
   const {
