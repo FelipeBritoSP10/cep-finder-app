@@ -10,9 +10,11 @@ export default function useCepSearch() {
   const handleFormattedCepChange = (value) => {
     setError('');
 
+    const cleanValue = value.replace(/\D/g, ''); 
     const cepMask = IMask.createMask({ mask: '00000-000' });
-    cepMask.value = value;    
-    setFormattedCep(cepMask.value);
+    cepMask.value = cleanValue;
+
+      setFormattedCep(cepMask.value);
   };
 
   const searchCep = async (onSuccess) => {
