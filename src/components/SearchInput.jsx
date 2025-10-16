@@ -1,5 +1,5 @@
-import React from 'react';
-import { TextField, Button, CircularProgress, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { TextField, Button, CircularProgress, Box, Typography } from '@mui/material';
 import useCepSearch from '../hooks/useCepSearch';
 
 export default function SearchInput() {
@@ -11,11 +11,11 @@ export default function SearchInput() {
     searchCep,
   } = useCepSearch();
 
+  const [address, setAddress] = useState(null);
+
   const handleSearch = () => {
     searchCep((data) => {
-      if (data) {
-        console.log('Endereço:', data);
-      }
+      setAddress(data);
     });
   };
 
@@ -43,6 +43,17 @@ export default function SearchInput() {
       >
         {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Buscar'}
       </Button>
+
+      {address && (
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="h6" gutterBottom>Endereço encontrado:</Typography>
+          <Typography><strong>Logradouro:</strong> {address.logradouro || '—'}</Typography>
+          <Typography><strong>Bairro:</strong> {address.bairro || '—'}</Typography>
+          <Typography><strong>Cidade:</strong> {address.localidade || '—'}</Typography>
+          <Typography><strong>Estado:</strong> {address.uf || '—'}</Typography>
+          <Typography><strong>CEP:</strong> {address.cep || formattedCep}</Typography>
+        </Box>
+      )}
     </Box>
   );
 }
