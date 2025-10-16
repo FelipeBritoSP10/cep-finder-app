@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import IMask from 'imask';
-import { getCepData } from "../services/cepApi"; 
+import { getCepData } from "../services/cepApi";
 
 export default function useCepSearch() {
   const [formattedCep, setFormattedCep] = useState('');
@@ -8,10 +8,10 @@ export default function useCepSearch() {
   const [error, setError] = useState('');
 
   const handleFormattedCepChange = (value) => {
-    setError(''); 
+    setError('');
 
     const cepMask = IMask.createMask({ mask: '00000-000' });
-    cepMask.resolve(value);
+    cepMask.value = value;    
     setFormattedCep(cepMask.value);
   };
 
@@ -39,7 +39,7 @@ export default function useCepSearch() {
     } catch (fetchError) {
       console.error('Erro ao buscar dados do CEP:', fetchError);
       onSuccess(null);
-      setError(fetchError.message || 'Erro desconhecido ao buscar o CEP.'); 
+      setError(fetchError.message || 'Erro desconhecido ao buscar o CEP.');
     } finally {
       setIsLoading(false);
     }
