@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import IMask from 'imask';
-import { getCepData } from '../services/cepApi';
+import { getCepData } from "../services";
 
 export default function useCepSearch() {
   const [formattedCep, setFormattedCep] = useState('');

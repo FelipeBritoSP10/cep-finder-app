@@ -1,0 +1,1 @@
+export { getCepData } from "./cepApi";
