@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Button, CircularProgress, Box, Typography } from '@mui/material';
-import useAddressSearch from '.../hooks/useAddressSearch'; 
+import useAddressSearch from '../hooks/useAddressSearch';
 
 export default function SearchInput() {
   const { query, setQuery, isLoading, error, results, handleSearch } = useAddressSearch();
@@ -13,7 +13,7 @@ export default function SearchInput() {
         fullWidth
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Procure por CEP ou endereço completo..."
+        placeholder="CEP / cidade / rua / bairro"
         sx={{ mb: 2 }}
       />
 
@@ -38,17 +38,10 @@ export default function SearchInput() {
           <Typography variant="h6" gutterBottom>
             Resultados encontrados:
           </Typography>
-
           {results.map((address, index) => (
             <Box
               key={index}
-              sx={{
-                mb: 2,
-                p: 1.5,
-                border: '1px solid #ddd',
-                borderRadius: 2,
-                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              }}
+              sx={{ mb: 2, p: 1, border: '1px solid #ccc', borderRadius: 2 }}
             >
               <Typography><strong>Logradouro:</strong> {address.logradouro || '—'}</Typography>
               <Typography><strong>Bairro:</strong> {address.bairro || '—'}</Typography>

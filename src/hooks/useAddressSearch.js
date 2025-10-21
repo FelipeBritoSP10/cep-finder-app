@@ -1,6 +1,5 @@
-// src/hooks/useAddressSearch.js
 import { useState } from 'react';
-import { getCepData } from '../services/cepApi'; // <-- aqui está o service correto
+import { getCepData } from '../services/cepApi';
 
 export default function useAddressSearch() {
   const [query, setQuery] = useState('');
@@ -9,21 +8,23 @@ export default function useAddressSearch() {
   const [results, setResults] = useState([]);
 
   const handleSearch = async () => {
+    if (!query.trim()) return;
+
     setIsLoading(true);
     setError('');
     setResults([]);
 
     try {
-      // Detecta se é CEP
       const isCep = /^[0-9]{5}-?[0-9]{3}$/.test(query);
 
+      let data;
+
       if (isCep) {
-        const data = await getCepData(query);
+        data = await getCepData(query);
         setResults([data]);
       } else {
-        // Busca por cidade + logradouro
         const parts = query.trim().split(' ');
-        const uf = 'SP'; // Pode tornar dinâmico depois
+        const uf = 'SP';
         const city = parts[0];
         const street = parts.slice(1).join(' ');
 
@@ -31,27 +32,20 @@ export default function useAddressSearch() {
           `https://viacep.com.br/ws/${uf}/${encodeURIComponent(city)}/${encodeURIComponent(street)}/json/`
         );
 
-        const data = await response.json();
+        const json = await response.json();
 
-        if (data.erro || (Array.isArray(data) && data.length === 0)) {
+        if (json.erro || json.length === 0) {
           setError('Nenhum resultado encontrado.');
         } else {
-          setResults(Array.isArray(data) ? data : [data]);
+          setResults(Array.isArray(json) ? json : [json]);
         }
       }
     } catch (err) {
-      setError(err.message || 'Erro ao buscar endereço.');
+      setError(err.message || 'Erro ao buscar endereço. Verifique os dados.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  return {
-    query,
-    setQuery,
-    isLoading,
-    error,
-    results,
-    handleSearch,
-  };
+  return { query, setQuery, isLoading, error, results, handleSearch };
 }
