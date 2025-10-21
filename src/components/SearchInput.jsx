@@ -1,36 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextField, Button, CircularProgress, Box, Typography } from '@mui/material';
-import useCepSearch from '../hooks/useCepSearch';
+import useAddressSearch from '.../hooks/useAddressSearch'; 
 
 export default function SearchInput() {
-  const {
-    formattedCep,
-    isLoading,
-    error,
-    handleFormattedCepChange,
-    searchCep,
-  } = useCepSearch();
-
-  const [address, setAddress] = useState(null);
-
-  const handleSearch = () => {
-    searchCep((data) => {
-      setAddress(data);
-    });
-  };
+  const { query, setQuery, isLoading, error, results, handleSearch } = useAddressSearch();
 
   return (
     <Box sx={{ maxWidth: 400, mx: 'auto', p: 2 }}>
       <TextField
-        label="Digite o CEP"
+        label="Digite CEP, cidade ou endereço"
         variant="outlined"
         fullWidth
-        value={formattedCep}
-        onChange={(e) => handleFormattedCepChange(e.target.value)}
-        placeholder="00000-000"
-        error={!!error}
-        helperText={error || ' '}
-        inputProps={{ maxLength: 9 }}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Procure por CEP ou endereço completo..."
         sx={{ mb: 2 }}
       />
 
@@ -38,20 +21,42 @@ export default function SearchInput() {
         variant="contained"
         color="primary"
         onClick={handleSearch}
-        disabled={isLoading}
+        disabled={isLoading || !query.trim()}
         fullWidth
       >
         {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Buscar'}
       </Button>
 
-      {address && (
+      {error && (
+        <Typography color="error" sx={{ mt: 2 }}>
+          {error}
+        </Typography>
+      )}
+
+      {results.length > 0 && (
         <Box sx={{ mt: 3 }}>
-          <Typography variant="h6" gutterBottom>Endereço encontrado:</Typography>
-          <Typography><strong>Logradouro:</strong> {address.logradouro || '—'}</Typography>
-          <Typography><strong>Bairro:</strong> {address.bairro || '—'}</Typography>
-          <Typography><strong>Cidade:</strong> {address.localidade || '—'}</Typography>
-          <Typography><strong>Estado:</strong> {address.uf || '—'}</Typography>
-          <Typography><strong>CEP:</strong> {address.cep || formattedCep}</Typography>
+          <Typography variant="h6" gutterBottom>
+            Resultados encontrados:
+          </Typography>
+
+          {results.map((address, index) => (
+            <Box
+              key={index}
+              sx={{
+                mb: 2,
+                p: 1.5,
+                border: '1px solid #ddd',
+                borderRadius: 2,
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              }}
+            >
+              <Typography><strong>Logradouro:</strong> {address.logradouro || '—'}</Typography>
+              <Typography><strong>Bairro:</strong> {address.bairro || '—'}</Typography>
+              <Typography><strong>Cidade:</strong> {address.localidade || '—'}</Typography>
+              <Typography><strong>Estado:</strong> {address.uf || '—'}</Typography>
+              <Typography><strong>CEP:</strong> {address.cep || '—'}</Typography>
+            </Box>
+          ))}
         </Box>
       )}
     </Box>
